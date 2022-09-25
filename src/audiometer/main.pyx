@@ -40,3 +40,30 @@ def calculate_rms(segment):
 
     result = pydub.utils.ratio_to_db(max_rms * AMPLITUDE_COEFFICIENT, using_amplitude=False)
     return round(result, 1)
+
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+def calculate_peak(segment):
+    cdef:
+        object samples = segment.get_array_of_samples()
+        int channels = segment.channels
+        float max_amplitude = segment.max_possible_amplitude
+        float total_peak
+        float channel_max_peak
+        float cur_peak
+        int sample_idx
+
+    total_peak = 0
+    for i in range(channels):
+        channel_samples = samples[i::channels]
+        channel_max_peak = 0
+        cur_peak = 0
+        for sample_idx in range(len(channel_samples)):
+            sample = fabs(channel_samples[sample_idx] / max_amplitude)
+            channel_max_peak = fmax(channel_max_peak, sample)
+
+        total_peak = fmax(total_peak, channel_max_peak)
+
+    result = pydub.utils.ratio_to_db(total_peak)
+    return round(result, 1)

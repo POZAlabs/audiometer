@@ -1194,6 +1194,9 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
+
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
@@ -1327,9 +1330,11 @@ static const char __pyx_k_max_rms[] = "max_rms";
 static const char __pyx_k_samples[] = "samples";
 static const char __pyx_k_segment[] = "segment";
 static const char __pyx_k_channels[] = "channels";
+static const char __pyx_k_cur_peak[] = "cur_peak";
 static const char __pyx_k_audiometer[] = "audiometer";
 static const char __pyx_k_frame_rate[] = "frame_rate";
 static const char __pyx_k_sample_idx[] = "sample_idx";
+static const char __pyx_k_total_peak[] = "total_peak";
 static const char __pyx_k_decay_const[] = "decay_const";
 static const char __pyx_k_pydub_utils[] = "pydub.utils";
 static const char __pyx_k_ratio_to_db[] = "ratio_to_db";
@@ -1337,19 +1342,24 @@ static const char __pyx_k_sample_rate[] = "sample_rate";
 static const char __pyx_k_update_ratio[] = "update_ratio";
 static const char __pyx_k_calculate_rms[] = "calculate_rms";
 static const char __pyx_k_max_amplitude[] = "max_amplitude";
+static const char __pyx_k_calculate_peak[] = "calculate_peak";
 static const char __pyx_k_channel_max_rms[] = "channel_max_rms";
 static const char __pyx_k_channel_samples[] = "channel_samples";
 static const char __pyx_k_using_amplitude[] = "using_amplitude";
+static const char __pyx_k_channel_max_peak[] = "channel_max_peak";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_get_array_of_samples[] = "get_array_of_samples";
 static const char __pyx_k_max_possible_amplitude[] = "max_possible_amplitude";
 static const char __pyx_k_src_audiometer_main_pyx[] = "src/audiometer/main.pyx";
 static PyObject *__pyx_n_s_audiometer;
+static PyObject *__pyx_n_s_calculate_peak;
 static PyObject *__pyx_n_s_calculate_rms;
+static PyObject *__pyx_n_s_channel_max_peak;
 static PyObject *__pyx_n_s_channel_max_rms;
 static PyObject *__pyx_n_s_channel_samples;
 static PyObject *__pyx_n_s_channels;
 static PyObject *__pyx_n_s_cline_in_traceback;
+static PyObject *__pyx_n_s_cur_peak;
 static PyObject *__pyx_n_s_cur_rms;
 static PyObject *__pyx_n_s_decay_const;
 static PyObject *__pyx_n_s_frame_rate;
@@ -1374,16 +1384,20 @@ static PyObject *__pyx_n_s_samples;
 static PyObject *__pyx_n_s_segment;
 static PyObject *__pyx_kp_s_src_audiometer_main_pyx;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_total_peak;
 static PyObject *__pyx_n_s_update_ratio;
 static PyObject *__pyx_n_s_using_amplitude;
 static PyObject *__pyx_n_s_utils;
 static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_segment); /* proto */
+static PyObject *__pyx_pf_10audiometer_2calculate_peak(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_segment); /* proto */
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_tuple_;
+static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_codeobj__2;
+static PyObject *__pyx_codeobj__4;
 /* Late includes */
 
-/* "src/audiometer/main.pyx":12
+/* "src/audiometer/main.pyx":14
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def calculate_rms(segment):             # <<<<<<<<<<<<<<
@@ -1421,7 +1435,7 @@ static PyObject *__pyx_pw_10audiometer_1calculate_rms(PyObject *__pyx_self, PyOb
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_rms") < 0)) __PYX_ERR(0, 12, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_rms") < 0)) __PYX_ERR(0, 14, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -1432,7 +1446,7 @@ static PyObject *__pyx_pw_10audiometer_1calculate_rms(PyObject *__pyx_self, PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("calculate_rms", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 12, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("calculate_rms", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 14, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("audiometer.calculate_rms", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1481,14 +1495,14 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("calculate_rms", 0);
 
-  /* "src/audiometer/main.pyx":14
+  /* "src/audiometer/main.pyx":16
  * def calculate_rms(segment):
  *     cdef:
  *         object samples = segment.get_array_of_samples()             # <<<<<<<<<<<<<<
  *         int sample_rate = segment.frame_rate
  *         float max_amplitude = segment.max_possible_amplitude
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_get_array_of_samples); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_get_array_of_samples); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1502,52 +1516,52 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_samples = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "src/audiometer/main.pyx":15
+  /* "src/audiometer/main.pyx":17
  *     cdef:
  *         object samples = segment.get_array_of_samples()
  *         int sample_rate = segment.frame_rate             # <<<<<<<<<<<<<<
  *         float max_amplitude = segment.max_possible_amplitude
  *         int channels = segment.channels
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_frame_rate); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_frame_rate); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_sample_rate = __pyx_t_4;
 
-  /* "src/audiometer/main.pyx":16
+  /* "src/audiometer/main.pyx":18
  *         object samples = segment.get_array_of_samples()
  *         int sample_rate = segment.frame_rate
  *         float max_amplitude = segment.max_possible_amplitude             # <<<<<<<<<<<<<<
  *         int channels = segment.channels
  *         float decay_const = exp(-1 / sample_rate / INTEGRATION_TIME)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_max_possible_amplitude); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_max_possible_amplitude); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_max_amplitude = __pyx_t_5;
 
-  /* "src/audiometer/main.pyx":17
+  /* "src/audiometer/main.pyx":19
  *         int sample_rate = segment.frame_rate
  *         float max_amplitude = segment.max_possible_amplitude
  *         int channels = segment.channels             # <<<<<<<<<<<<<<
  *         float decay_const = exp(-1 / sample_rate / INTEGRATION_TIME)
  *         float update_ratio = 1 - decay_const
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_channels); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_channels); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_channels = __pyx_t_4;
 
-  /* "src/audiometer/main.pyx":18
+  /* "src/audiometer/main.pyx":20
  *         float max_amplitude = segment.max_possible_amplitude
  *         int channels = segment.channels
  *         float decay_const = exp(-1 / sample_rate / INTEGRATION_TIME)             # <<<<<<<<<<<<<<
@@ -1556,16 +1570,16 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
  */
   if (unlikely(__pyx_v_sample_rate == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 18, __pyx_L1_error)
+    __PYX_ERR(0, 20, __pyx_L1_error)
   }
   __pyx_t_6 = (-1.0 / ((double)__pyx_v_sample_rate));
   if (unlikely(__pyx_v_10audiometer_INTEGRATION_TIME == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 18, __pyx_L1_error)
+    __PYX_ERR(0, 20, __pyx_L1_error)
   }
   __pyx_v_decay_const = exp((__pyx_t_6 / ((double)__pyx_v_10audiometer_INTEGRATION_TIME)));
 
-  /* "src/audiometer/main.pyx":19
+  /* "src/audiometer/main.pyx":21
  *         int channels = segment.channels
  *         float decay_const = exp(-1 / sample_rate / INTEGRATION_TIME)
  *         float update_ratio = 1 - decay_const             # <<<<<<<<<<<<<<
@@ -1574,7 +1588,7 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
  */
   __pyx_v_update_ratio = (1.0 - __pyx_v_decay_const);
 
-  /* "src/audiometer/main.pyx":27
+  /* "src/audiometer/main.pyx":29
  *         float cur_rms
  * 
  *     max_rms = 0             # <<<<<<<<<<<<<<
@@ -1583,7 +1597,7 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
  */
   __pyx_v_max_rms = 0.0;
 
-  /* "src/audiometer/main.pyx":28
+  /* "src/audiometer/main.pyx":30
  * 
  *     max_rms = 0
  *     for i in range(channels):             # <<<<<<<<<<<<<<
@@ -1595,7 +1609,7 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "src/audiometer/main.pyx":29
+    /* "src/audiometer/main.pyx":31
  *     max_rms = 0
  *     for i in range(channels):
  *         channel_max_rms = 0             # <<<<<<<<<<<<<<
@@ -1604,7 +1618,7 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
  */
     __pyx_v_channel_max_rms = 0.0;
 
-    /* "src/audiometer/main.pyx":30
+    /* "src/audiometer/main.pyx":32
  *     for i in range(channels):
  *         channel_max_rms = 0
  *         cur_rms = 0             # <<<<<<<<<<<<<<
@@ -1613,59 +1627,59 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
  */
     __pyx_v_cur_rms = 0.0;
 
-    /* "src/audiometer/main.pyx":31
+    /* "src/audiometer/main.pyx":33
  *         channel_max_rms = 0
  *         cur_rms = 0
  *         channel_samples = samples[i::channels]             # <<<<<<<<<<<<<<
  *         for sample_idx in range(len(channel_samples)):
  *             sample = fabs(channel_samples[sample_idx] / max_amplitude)
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_channels); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_channels); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySlice_New(__pyx_t_1, Py_None, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+    __pyx_t_3 = PySlice_New(__pyx_t_1, Py_None, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_samples, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_samples, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_XDECREF_SET(__pyx_v_channel_samples, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "src/audiometer/main.pyx":32
+    /* "src/audiometer/main.pyx":34
  *         cur_rms = 0
  *         channel_samples = samples[i::channels]
  *         for sample_idx in range(len(channel_samples)):             # <<<<<<<<<<<<<<
  *             sample = fabs(channel_samples[sample_idx] / max_amplitude)
  *             cur_rms = (cur_rms * decay_const) + (sample * sample * update_ratio)
  */
-    __pyx_t_9 = PyObject_Length(__pyx_v_channel_samples); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 32, __pyx_L1_error)
+    __pyx_t_9 = PyObject_Length(__pyx_v_channel_samples); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 34, __pyx_L1_error)
     __pyx_t_10 = __pyx_t_9;
     for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
       __pyx_v_sample_idx = __pyx_t_11;
 
-      /* "src/audiometer/main.pyx":33
+      /* "src/audiometer/main.pyx":35
  *         channel_samples = samples[i::channels]
  *         for sample_idx in range(len(channel_samples)):
  *             sample = fabs(channel_samples[sample_idx] / max_amplitude)             # <<<<<<<<<<<<<<
  *             cur_rms = (cur_rms * decay_const) + (sample * sample * update_ratio)
  *             channel_max_rms = fmax(channel_max_rms, cur_rms)
  */
-      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_channel_samples, __pyx_v_sample_idx, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_channel_samples, __pyx_v_sample_idx, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = PyFloat_FromDouble(__pyx_v_max_amplitude); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __pyx_t_3 = PyFloat_FromDouble(__pyx_v_max_amplitude); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 33, __pyx_L1_error)
+      __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 35, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_v_sample = fabs(__pyx_t_6);
 
-      /* "src/audiometer/main.pyx":34
+      /* "src/audiometer/main.pyx":36
  *         for sample_idx in range(len(channel_samples)):
  *             sample = fabs(channel_samples[sample_idx] / max_amplitude)
  *             cur_rms = (cur_rms * decay_const) + (sample * sample * update_ratio)             # <<<<<<<<<<<<<<
@@ -1674,7 +1688,7 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
  */
       __pyx_v_cur_rms = ((__pyx_v_cur_rms * __pyx_v_decay_const) + ((__pyx_v_sample * __pyx_v_sample) * __pyx_v_update_ratio));
 
-      /* "src/audiometer/main.pyx":35
+      /* "src/audiometer/main.pyx":37
  *             sample = fabs(channel_samples[sample_idx] / max_amplitude)
  *             cur_rms = (cur_rms * decay_const) + (sample * sample * update_ratio)
  *             channel_max_rms = fmax(channel_max_rms, cur_rms)             # <<<<<<<<<<<<<<
@@ -1684,7 +1698,7 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
       __pyx_v_channel_max_rms = fmax(__pyx_v_channel_max_rms, __pyx_v_cur_rms);
     }
 
-    /* "src/audiometer/main.pyx":37
+    /* "src/audiometer/main.pyx":39
  *             channel_max_rms = fmax(channel_max_rms, cur_rms)
  * 
  *         max_rms = max(max_rms, channel_max_rms)             # <<<<<<<<<<<<<<
@@ -1701,31 +1715,32 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
     __pyx_v_max_rms = __pyx_t_13;
   }
 
-  /* "src/audiometer/main.pyx":39
+  /* "src/audiometer/main.pyx":41
  *         max_rms = max(max_rms, channel_max_rms)
  * 
  *     result = pydub.utils.ratio_to_db(max_rms * AMPLITUDE_COEFFICIENT, using_amplitude=False)             # <<<<<<<<<<<<<<
  *     return round(result, 1)
+ * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pydub); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pydub); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_utils); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_utils); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ratio_to_db); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ratio_to_db); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyFloat_FromDouble((__pyx_v_max_rms * __pyx_v_10audiometer_AMPLITUDE_COEFFICIENT)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble((__pyx_v_max_rms * __pyx_v_10audiometer_AMPLITUDE_COEFFICIENT)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_using_amplitude, Py_False) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
-  __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_using_amplitude, Py_False) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -1733,13 +1748,15 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
   __pyx_v_result = __pyx_t_14;
   __pyx_t_14 = 0;
 
-  /* "src/audiometer/main.pyx":40
+  /* "src/audiometer/main.pyx":42
  * 
  *     result = pydub.utils.ratio_to_db(max_rms * AMPLITUDE_COEFFICIENT, using_amplitude=False)
  *     return round(result, 1)             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_14 = PyTuple_New(2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_14 = PyTuple_New(2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_INCREF(__pyx_v_result);
   __Pyx_GIVEREF(__pyx_v_result);
@@ -1747,14 +1764,14 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
   PyTuple_SET_ITEM(__pyx_t_14, 1, __pyx_int_1);
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "src/audiometer/main.pyx":12
+  /* "src/audiometer/main.pyx":14
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def calculate_rms(segment):             # <<<<<<<<<<<<<<
@@ -1769,6 +1786,344 @@ static PyObject *__pyx_pf_10audiometer_calculate_rms(CYTHON_UNUSED PyObject *__p
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_14);
   __Pyx_AddTraceback("audiometer.calculate_rms", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_samples);
+  __Pyx_XDECREF(__pyx_v_channel_samples);
+  __Pyx_XDECREF(__pyx_v_result);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "src/audiometer/main.pyx":47
+ * @cython.boundscheck(False)
+ * @cython.wraparound(False)
+ * def calculate_peak(segment):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         object samples = segment.get_array_of_samples()
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10audiometer_3calculate_peak(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_10audiometer_3calculate_peak = {"calculate_peak", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_10audiometer_3calculate_peak, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10audiometer_3calculate_peak(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_segment = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("calculate_peak (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_segment,0};
+    PyObject* values[1] = {0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_segment)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_peak") < 0)) __PYX_ERR(0, 47, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+    }
+    __pyx_v_segment = values[0];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("calculate_peak", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 47, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("audiometer.calculate_peak", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_10audiometer_2calculate_peak(__pyx_self, __pyx_v_segment);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10audiometer_2calculate_peak(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_segment) {
+  PyObject *__pyx_v_samples = 0;
+  int __pyx_v_channels;
+  float __pyx_v_max_amplitude;
+  float __pyx_v_total_peak;
+  float __pyx_v_channel_max_peak;
+  CYTHON_UNUSED float __pyx_v_cur_peak;
+  int __pyx_v_sample_idx;
+  int __pyx_v_i;
+  PyObject *__pyx_v_channel_samples = NULL;
+  double __pyx_v_sample;
+  PyObject *__pyx_v_result = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  int __pyx_t_4;
+  float __pyx_t_5;
+  int __pyx_t_6;
+  int __pyx_t_7;
+  Py_ssize_t __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  int __pyx_t_10;
+  double __pyx_t_11;
+  PyObject *__pyx_t_12 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("calculate_peak", 0);
+
+  /* "src/audiometer/main.pyx":49
+ * def calculate_peak(segment):
+ *     cdef:
+ *         object samples = segment.get_array_of_samples()             # <<<<<<<<<<<<<<
+ *         int channels = segment.channels
+ *         float max_amplitude = segment.max_possible_amplitude
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_get_array_of_samples); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_samples = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "src/audiometer/main.pyx":50
+ *     cdef:
+ *         object samples = segment.get_array_of_samples()
+ *         int channels = segment.channels             # <<<<<<<<<<<<<<
+ *         float max_amplitude = segment.max_possible_amplitude
+ *         float total_peak
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_channels); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_channels = __pyx_t_4;
+
+  /* "src/audiometer/main.pyx":51
+ *         object samples = segment.get_array_of_samples()
+ *         int channels = segment.channels
+ *         float max_amplitude = segment.max_possible_amplitude             # <<<<<<<<<<<<<<
+ *         float total_peak
+ *         float channel_max_peak
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_segment, __pyx_n_s_max_possible_amplitude); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_max_amplitude = __pyx_t_5;
+
+  /* "src/audiometer/main.pyx":57
+ *         int sample_idx
+ * 
+ *     total_peak = 0             # <<<<<<<<<<<<<<
+ *     for i in range(channels):
+ *         channel_samples = samples[i::channels]
+ */
+  __pyx_v_total_peak = 0.0;
+
+  /* "src/audiometer/main.pyx":58
+ * 
+ *     total_peak = 0
+ *     for i in range(channels):             # <<<<<<<<<<<<<<
+ *         channel_samples = samples[i::channels]
+ *         channel_max_peak = 0
+ */
+  __pyx_t_4 = __pyx_v_channels;
+  __pyx_t_6 = __pyx_t_4;
+  for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
+    __pyx_v_i = __pyx_t_7;
+
+    /* "src/audiometer/main.pyx":59
+ *     total_peak = 0
+ *     for i in range(channels):
+ *         channel_samples = samples[i::channels]             # <<<<<<<<<<<<<<
+ *         channel_max_peak = 0
+ *         cur_peak = 0
+ */
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_channels); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = PySlice_New(__pyx_t_1, Py_None, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_samples, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_channel_samples, __pyx_t_2);
+    __pyx_t_2 = 0;
+
+    /* "src/audiometer/main.pyx":60
+ *     for i in range(channels):
+ *         channel_samples = samples[i::channels]
+ *         channel_max_peak = 0             # <<<<<<<<<<<<<<
+ *         cur_peak = 0
+ *         for sample_idx in range(len(channel_samples)):
+ */
+    __pyx_v_channel_max_peak = 0.0;
+
+    /* "src/audiometer/main.pyx":61
+ *         channel_samples = samples[i::channels]
+ *         channel_max_peak = 0
+ *         cur_peak = 0             # <<<<<<<<<<<<<<
+ *         for sample_idx in range(len(channel_samples)):
+ *             sample = fabs(channel_samples[sample_idx] / max_amplitude)
+ */
+    __pyx_v_cur_peak = 0.0;
+
+    /* "src/audiometer/main.pyx":62
+ *         channel_max_peak = 0
+ *         cur_peak = 0
+ *         for sample_idx in range(len(channel_samples)):             # <<<<<<<<<<<<<<
+ *             sample = fabs(channel_samples[sample_idx] / max_amplitude)
+ *             channel_max_peak = fmax(channel_max_peak, sample)
+ */
+    __pyx_t_8 = PyObject_Length(__pyx_v_channel_samples); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 62, __pyx_L1_error)
+    __pyx_t_9 = __pyx_t_8;
+    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
+      __pyx_v_sample_idx = __pyx_t_10;
+
+      /* "src/audiometer/main.pyx":63
+ *         cur_peak = 0
+ *         for sample_idx in range(len(channel_samples)):
+ *             sample = fabs(channel_samples[sample_idx] / max_amplitude)             # <<<<<<<<<<<<<<
+ *             channel_max_peak = fmax(channel_max_peak, sample)
+ * 
+ */
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_channel_samples, __pyx_v_sample_idx, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_3 = PyFloat_FromDouble(__pyx_v_max_amplitude); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_v_sample = fabs(__pyx_t_11);
+
+      /* "src/audiometer/main.pyx":64
+ *         for sample_idx in range(len(channel_samples)):
+ *             sample = fabs(channel_samples[sample_idx] / max_amplitude)
+ *             channel_max_peak = fmax(channel_max_peak, sample)             # <<<<<<<<<<<<<<
+ * 
+ *         total_peak = fmax(total_peak, channel_max_peak)
+ */
+      __pyx_v_channel_max_peak = fmax(__pyx_v_channel_max_peak, __pyx_v_sample);
+    }
+
+    /* "src/audiometer/main.pyx":66
+ *             channel_max_peak = fmax(channel_max_peak, sample)
+ * 
+ *         total_peak = fmax(total_peak, channel_max_peak)             # <<<<<<<<<<<<<<
+ * 
+ *     result = pydub.utils.ratio_to_db(total_peak)
+ */
+    __pyx_v_total_peak = fmax(__pyx_v_total_peak, __pyx_v_channel_max_peak);
+  }
+
+  /* "src/audiometer/main.pyx":68
+ *         total_peak = fmax(total_peak, channel_max_peak)
+ * 
+ *     result = pydub.utils.ratio_to_db(total_peak)             # <<<<<<<<<<<<<<
+ *     return round(result, 1)
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_pydub); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_utils); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_ratio_to_db); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_total_peak); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_12 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_12)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_12);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_12, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_result = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "src/audiometer/main.pyx":69
+ * 
+ *     result = pydub.utils.ratio_to_db(total_peak)
+ *     return round(result, 1)             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_v_result);
+  __Pyx_GIVEREF(__pyx_v_result);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_result);
+  __Pyx_INCREF(__pyx_int_1);
+  __Pyx_GIVEREF(__pyx_int_1);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_int_1);
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_1, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
+  goto __pyx_L0;
+
+  /* "src/audiometer/main.pyx":47
+ * @cython.boundscheck(False)
+ * @cython.wraparound(False)
+ * def calculate_peak(segment):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         object samples = segment.get_array_of_samples()
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_AddTraceback("audiometer.calculate_peak", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_samples);
@@ -1826,11 +2181,14 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_audiometer, __pyx_k_audiometer, sizeof(__pyx_k_audiometer), 0, 0, 1, 1},
+  {&__pyx_n_s_calculate_peak, __pyx_k_calculate_peak, sizeof(__pyx_k_calculate_peak), 0, 0, 1, 1},
   {&__pyx_n_s_calculate_rms, __pyx_k_calculate_rms, sizeof(__pyx_k_calculate_rms), 0, 0, 1, 1},
+  {&__pyx_n_s_channel_max_peak, __pyx_k_channel_max_peak, sizeof(__pyx_k_channel_max_peak), 0, 0, 1, 1},
   {&__pyx_n_s_channel_max_rms, __pyx_k_channel_max_rms, sizeof(__pyx_k_channel_max_rms), 0, 0, 1, 1},
   {&__pyx_n_s_channel_samples, __pyx_k_channel_samples, sizeof(__pyx_k_channel_samples), 0, 0, 1, 1},
   {&__pyx_n_s_channels, __pyx_k_channels, sizeof(__pyx_k_channels), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+  {&__pyx_n_s_cur_peak, __pyx_k_cur_peak, sizeof(__pyx_k_cur_peak), 0, 0, 1, 1},
   {&__pyx_n_s_cur_rms, __pyx_k_cur_rms, sizeof(__pyx_k_cur_rms), 0, 0, 1, 1},
   {&__pyx_n_s_decay_const, __pyx_k_decay_const, sizeof(__pyx_k_decay_const), 0, 0, 1, 1},
   {&__pyx_n_s_frame_rate, __pyx_k_frame_rate, sizeof(__pyx_k_frame_rate), 0, 0, 1, 1},
@@ -1855,14 +2213,15 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_segment, __pyx_k_segment, sizeof(__pyx_k_segment), 0, 0, 1, 1},
   {&__pyx_kp_s_src_audiometer_main_pyx, __pyx_k_src_audiometer_main_pyx, sizeof(__pyx_k_src_audiometer_main_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_total_peak, __pyx_k_total_peak, sizeof(__pyx_k_total_peak), 0, 0, 1, 1},
   {&__pyx_n_s_update_ratio, __pyx_k_update_ratio, sizeof(__pyx_k_update_ratio), 0, 0, 1, 1},
   {&__pyx_n_s_using_amplitude, __pyx_k_using_amplitude, sizeof(__pyx_k_using_amplitude), 0, 0, 1, 1},
   {&__pyx_n_s_utils, __pyx_k_utils, sizeof(__pyx_k_utils), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 28, __pyx_L1_error)
-  __pyx_builtin_round = __Pyx_GetBuiltinName(__pyx_n_s_round); if (!__pyx_builtin_round) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_builtin_round = __Pyx_GetBuiltinName(__pyx_n_s_round); if (!__pyx_builtin_round) __PYX_ERR(0, 42, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -1872,17 +2231,29 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "src/audiometer/main.pyx":12
+  /* "src/audiometer/main.pyx":14
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def calculate_rms(segment):             # <<<<<<<<<<<<<<
  *     cdef:
  *         object samples = segment.get_array_of_samples()
  */
-  __pyx_tuple_ = PyTuple_Pack(15, __pyx_n_s_segment, __pyx_n_s_samples, __pyx_n_s_sample_rate, __pyx_n_s_max_amplitude, __pyx_n_s_channels, __pyx_n_s_decay_const, __pyx_n_s_update_ratio, __pyx_n_s_i, __pyx_n_s_sample_idx, __pyx_n_s_sample, __pyx_n_s_max_rms, __pyx_n_s_channel_max_rms, __pyx_n_s_cur_rms, __pyx_n_s_channel_samples, __pyx_n_s_result); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(15, __pyx_n_s_segment, __pyx_n_s_samples, __pyx_n_s_sample_rate, __pyx_n_s_max_amplitude, __pyx_n_s_channels, __pyx_n_s_decay_const, __pyx_n_s_update_ratio, __pyx_n_s_i, __pyx_n_s_sample_idx, __pyx_n_s_sample, __pyx_n_s_max_rms, __pyx_n_s_channel_max_rms, __pyx_n_s_cur_rms, __pyx_n_s_channel_samples, __pyx_n_s_result); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 15, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_audiometer_main_pyx, __pyx_n_s_calculate_rms, 12, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 15, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_audiometer_main_pyx, __pyx_n_s_calculate_rms, 14, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 14, __pyx_L1_error)
+
+  /* "src/audiometer/main.pyx":47
+ * @cython.boundscheck(False)
+ * @cython.wraparound(False)
+ * def calculate_peak(segment):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         object samples = segment.get_array_of_samples()
+ */
+  __pyx_tuple__3 = PyTuple_Pack(12, __pyx_n_s_segment, __pyx_n_s_samples, __pyx_n_s_channels, __pyx_n_s_max_amplitude, __pyx_n_s_total_peak, __pyx_n_s_channel_max_peak, __pyx_n_s_cur_peak, __pyx_n_s_sample_idx, __pyx_n_s_i, __pyx_n_s_channel_samples, __pyx_n_s_sample, __pyx_n_s_result); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 12, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_audiometer_main_pyx, __pyx_n_s_calculate_peak, 47, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2165,16 +2536,16 @@ if (!__Pyx_RefNanny) {
   /* "src/audiometer/main.pyx":2
  * import cython
  * import pydub.utils             # <<<<<<<<<<<<<<
- * from libc.math cimport fabs, fmax, exp
  * 
+ * from libc.math cimport exp, fabs, fmax
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_pydub_utils, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pydub, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "src/audiometer/main.pyx":5
- * from libc.math cimport fabs, fmax, exp
+  /* "src/audiometer/main.pyx":7
+ * 
  * 
  * cdef float INTEGRATION_TIME = 0.3 / 2             # <<<<<<<<<<<<<<
  * cdef int AMPLITUDE_COEFFICIENT = 2
@@ -2182,7 +2553,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_10audiometer_INTEGRATION_TIME = (0.3 / 2.0);
 
-  /* "src/audiometer/main.pyx":6
+  /* "src/audiometer/main.pyx":8
  * 
  * cdef float INTEGRATION_TIME = 0.3 / 2
  * cdef int AMPLITUDE_COEFFICIENT = 2             # <<<<<<<<<<<<<<
@@ -2191,7 +2562,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_10audiometer_AMPLITUDE_COEFFICIENT = 2;
 
-  /* "src/audiometer/main.pyx":7
+  /* "src/audiometer/main.pyx":9
  * cdef float INTEGRATION_TIME = 0.3 / 2
  * cdef int AMPLITUDE_COEFFICIENT = 2
  * cdef int RMS_AMPLITUDE_BONUS = 10             # <<<<<<<<<<<<<<
@@ -2200,22 +2571,34 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_10audiometer_RMS_AMPLITUDE_BONUS = 10;
 
-  /* "src/audiometer/main.pyx":12
+  /* "src/audiometer/main.pyx":14
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def calculate_rms(segment):             # <<<<<<<<<<<<<<
  *     cdef:
  *         object samples = segment.get_array_of_samples()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10audiometer_1calculate_rms, NULL, __pyx_n_s_audiometer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10audiometer_1calculate_rms, NULL, __pyx_n_s_audiometer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_calculate_rms, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_calculate_rms, __pyx_t_1) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "src/audiometer/main.pyx":47
+ * @cython.boundscheck(False)
+ * @cython.wraparound(False)
+ * def calculate_peak(segment):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         object samples = segment.get_array_of_samples()
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10audiometer_3calculate_peak, NULL, __pyx_n_s_audiometer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_calculate_peak, __pyx_t_1) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "src/audiometer/main.pyx":1
  * import cython             # <<<<<<<<<<<<<<
  * import pydub.utils
- * from libc.math cimport fabs, fmax, exp
+ * 
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -2853,6 +3236,35 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
     PyErr_Clear();
 #endif
     return __Pyx_GetBuiltinName(name);
+}
+
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
+    }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
+    return result;
 }
 
 /* Import */
