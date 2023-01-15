@@ -24,9 +24,9 @@ fn calculate_rms_inner(
     let update_ratio = 1.0 - decay_const;
 
     let mut max_rms: f64 = 0.0;
-    let mut current_rms: f64 = 0.0;
     for i in 0..channels {
         let mut channel_max_rms: f64 = 0.0;
+        let mut current_rms: f64 = 0.0;
         for channel_sample in samples[i..].iter().step_by(channels) {
             let sample = (*channel_sample as f64 / max_amplitude).abs();
             current_rms = (current_rms * decay_const) + (sample * sample * update_ratio);
