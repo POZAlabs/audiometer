@@ -1,9 +1,6 @@
-name: CI
+name: Release package
 
 on:
-  pull_request:
-    branches:
-      - main
   release:
     types:
       - published
@@ -64,8 +61,7 @@ jobs:
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:
-#          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
-          MATURIN_PYPI_TOKEN: "pypi-AgENdGVzdC5weXBpLm9yZwIkMWMzMzVmZDMtNmU4ZS00NGZmLTk2NWYtNjNjNmIyMzI3MzUxAAIqWzMsIjExYjhhMWM4LWMyMzgtNDhmZi04YWI3LWI1ZWI2ZmVjNjAwMyJdAAAGIBVisSNevZXAqM2PirvUYpBCtzTdMK0ecGI1_gMASrjK"
+          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         with:
           command: upload
           args: --skip-existing *
