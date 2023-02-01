@@ -1,11 +1,11 @@
 import pydub
 
-from .audiometer import calculate_peak_inner, calculate_rms_inner
+from audiometer import _audiometer
 
 
 def calculate_rms(segment: pydub.AudioSegment) -> float:
     return round(
-        calculate_rms_inner(
+        _audiometer.calculate_rms_inner(
             samples=segment.get_array_of_samples(),
             channels=segment.channels,
             max_amplitude=segment.max_possible_amplitude,
@@ -17,7 +17,7 @@ def calculate_rms(segment: pydub.AudioSegment) -> float:
 
 def calculate_peak(segment: pydub.AudioSegment) -> float:
     return round(
-        calculate_peak_inner(
+        _audiometer.calculate_peak_inner(
             samples=segment.get_array_of_samples(),
             channels=segment.channels,
             max_amplitude=segment.max_possible_amplitude,

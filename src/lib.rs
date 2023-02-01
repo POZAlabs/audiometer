@@ -1,5 +1,8 @@
 use pyo3::prelude::*;
 
+// Integration time 300ms을 2를 나눈 값인 150ms 만큼 지수이동평균 적용
+const INTEGRATION_TIME: f64 = 0.3 / 2.0;
+// AES17에 따라 RMS 값에 +3dB를 적용하기 위한 보정값 (log10(2) = 0.3)
 const AMPLITUDE_COEFFICIENT: f64 = 2.0;
 
 fn ratio_to_db(ratio: f64, using_amplitude: bool) -> f64 {
@@ -20,7 +23,7 @@ fn calculate_rms_inner(
     max_amplitude: f64,
     sample_rate: isize,
 ) -> f64 {
-    let decay_const = (-1.0 / sample_rate as f64 / (0.3 / 2.0)).exp();
+    let decay_const = (-1.0 / sample_rate as f64 / INTEGRATION_TIME).exp();
     let update_ratio = 1.0 - decay_const;
 
     let mut max_rms: f64 = 0.0;
@@ -57,7 +60,7 @@ fn calculate_peak_inner(samples: Vec<isize>, channels: usize, max_amplitude: f64
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn audiometer(_py: Python, m: &PyModule) -> PyResult<()> {
+fn _audiometer(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(calculate_rms_inner, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_peak_inner, m)?)?;
     Ok(())
