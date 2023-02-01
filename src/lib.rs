@@ -60,7 +60,7 @@ fn calculate_peak_inner(samples: Vec<isize>, channels: usize, max_amplitude: f64
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn audiometer(_py: Python, m: &PyModule) -> PyResult<()> {
+fn _audiometer(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(calculate_rms_inner, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_peak_inner, m)?)?;
     Ok(())
