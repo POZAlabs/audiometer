@@ -8,8 +8,5 @@ edition = "2021"
 name = "audiometer"
 crate-type = ["cdylib"]
 
-[package.metadata.maturin]
-name = "audiometer._audiometer"
-
 [dependencies]
 pyo3 = { version = "0.19.2", features = ["extension-module"] }
