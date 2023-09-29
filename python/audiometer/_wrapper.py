@@ -5,13 +5,18 @@ import shutil
 import subprocess
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict
 
 import pydub
 
 from audiometer import _audiometer
 
 from . import stream
+
+
+class LUFS(TypedDict):
+    integrated: float
+    momentary: list[float]
 
 
 def required(executable_name: str) -> Callable[..., Any]:
@@ -47,6 +52,18 @@ def calculate_peak(segment: pydub.AudioSegment) -> float:
             max_amplitude=segment.max_possible_amplitude,
         ),
         1,
+    )
+
+
+def calculate_lufs(segment: pydub.AudioSegment) -> LUFS:
+    filter_output = stream.with_file(
+        export=functools.partial(segment.export, format="wav", codec="pcm_s24le"),
+        func=apply_ebur128_filter,
+        suffix=".wav",
+    )
+    return dict(
+        integrated=_audiometer.parse_integrated_loudness(filter_output),
+        momentary=_audiometer.parse_momentary_loudness(filter_output),
     )
 
 
