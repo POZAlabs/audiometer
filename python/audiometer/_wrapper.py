@@ -59,6 +59,15 @@ def calculate_integrated_loudness(segment: pydub.AudioSegment) -> float:
     return _audiometer.parse_integrated_loudness(filter_output)
 
 
+def calculate_momentary_loudness(segment: pydub.AudioSegment) -> list[float]:
+    filter_output = stream.with_file(
+        export=functools.partial(segment.export, format="wav", codec="pcm_s24le"),
+        func=apply_ebur128_filter,
+        suffix=".wav",
+    )
+    return _audiometer.parse_momentary_loudness(filter_output)
+
+
 @required("ffmpeg")
 def apply_ebur128_filter(input_path: str | Path) -> str:
     cmd = f"ffmpeg -i {input_path} -filter_complex ebur128=peak=true -f null -"
