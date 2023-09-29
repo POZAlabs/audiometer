@@ -39,7 +39,7 @@ pub fn parse_integrated_loudness(filter_output: &str) -> f64 {
 
 #[pyfunction]
 pub fn parse_momentary_loudness(filter_output: &str) -> Vec<f64> {
-    let output_pattern = Regex::new(r"(\[Parsed.+] t)").unwrap();
+    let output_pattern = Regex::new(r"(\[Parsed.+] t.*)").unwrap();
     let value_pattern = Regex::new(r"(?P<label>M:(\s+)?)(?P<value>-?\d+\.\d+|\w+)").unwrap();
 
     return output_pattern
@@ -52,9 +52,9 @@ pub fn parse_momentary_loudness(filter_output: &str) -> Vec<f64> {
             }
         })
         .filter_map(|value| {
-            let matched = value_pattern.find(value);
-            match matched {
-                Some(matched) => Some(matched.as_str()),
+            let cap = value_pattern.captures(value);
+            match cap {
+                Some(matched) => Some(matched.name("value")?.as_str()),
                 None => None,
             }
         })
