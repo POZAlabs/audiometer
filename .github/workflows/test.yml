@@ -14,8 +14,7 @@ jobs:
 
       - uses: PyO3/maturin-action@v1
         with:
-          command: build
-          args: --release -o dist --find-interpreter
+          command: develop
 
       - name: Install dependencies
         run: |
