@@ -25,11 +25,10 @@ pub fn parse_integrated_loudness(filter_output: &str) -> f64 {
             }
         })
         .filter_map(|value| {
-            let parsed_value = value.parse::<f64>().ok();
-            if parsed_value == Some(-70.0) {
+            if value == "-70.0" {
                 None
             } else {
-                parsed_value
+                value.parse::<f64>().ok()
             }
         })
         .collect::<Vec<f64>>();
