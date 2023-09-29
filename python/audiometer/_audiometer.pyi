@@ -11,3 +11,6 @@ def calculate_peak_inner(
     channels: int,
     max_amplitude: float,
 ) -> float: ...
+def parse_integrated_loudness(
+    filter_output: str,
+) -> float: ...
