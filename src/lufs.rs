@@ -4,8 +4,9 @@ use regex::Regex;
 #[pyfunction]
 pub fn parse_integrated_loudness(filter_output: &str) -> f64 {
     let output_pattern = Regex::new(
-        r"(?P<label>Integrated loudness:)(?P<whitespace>\n\s+)(?P<value>I:\s+?[-]?\d+\.\d+\s+?LUFS)"
-    ).unwrap();
+        r"(?P<label>Integrated loudness:)(?P<whitespace>\n\s+)(?P<value>I:\s+?-?\d+\.\d+\s+?LUFS)",
+    )
+    .unwrap();
     let value_pattern = Regex::new(r"-?\d+\.\d+").unwrap();
 
     let outputs = output_pattern
