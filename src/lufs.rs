@@ -12,15 +12,15 @@ pub fn parse_integrated_loudness(filter_output: &str) -> f64 {
     let outputs = output_pattern
         .captures_iter(filter_output)
         .filter_map(|cap| {
-            let value = cap.name("value");
-            match value {
+            let matched = cap.name("value");
+            match matched {
                 Some(value) => Some(value.as_str()),
                 None => None,
             }
         })
         .filter_map(|value| {
-            let value = value_pattern.find(value);
-            match value {
+            let matched = value_pattern.find(value);
+            match matched {
                 Some(value) => Some(value.as_str()),
                 None => None,
             }
