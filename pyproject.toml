@@ -15,6 +15,13 @@ dependencies = [
     "pydub==0.25.1"
 ]
 
+[project.optional-dependencies]
+dev = [
+    "maturin==1.2.3",
+    "pre-commit==3.4.0",
+    "pytest==7.4.2",
+]
+
 [tool.maturin]
 python-source = "python"
 module-name = "audiometer._audiometer"
