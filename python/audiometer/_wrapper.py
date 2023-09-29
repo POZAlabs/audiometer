@@ -1,6 +1,30 @@
+from __future__ import annotations
+
+import functools
+import shutil
+import subprocess
+from collections.abc import Callable
+from pathlib import Path
+from typing import Any
+
 import pydub
 
 from audiometer import _audiometer
+
+from . import stream
+
+
+def required(executable_name: str) -> Callable[..., Any]:
+    def decorator(func: Callable[..., Any]):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs) -> Any:
+            if shutil.which(executable_name) is None:
+                raise ValueError(f"{executable_name} is not installed")
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def calculate_rms(segment: pydub.AudioSegment) -> float:
@@ -24,3 +48,18 @@ def calculate_peak(segment: pydub.AudioSegment) -> float:
         ),
         1,
     )
+
+
+def calculate_integrated_loudness(segment: pydub.AudioSegment) -> float:
+    filter_output = stream.with_file(
+        export=functools.partial(segment.export, format="wav", codec="pcm_s24le"),
+        func=_apply_ebur128_filter,
+        suffix=".wav",
+    )
+    return _audiometer.parse_integrated_loudness(filter_output)
+
+
+@required("ffmpeg")
+def _apply_ebur128_filter(input_path: str | Path) -> str:
+    cmd = f"ffmpeg -i {input_path} -filter_complex ebur128=peak=true -f null -"
+    return subprocess.run(cmd.split(" "), capture_output=True).stderr.decode()
