@@ -1,5 +1,7 @@
 use pyo3::prelude::*;
 
+mod lufs;
+
 // Integration time 300ms을 2를 나눈 값인 150ms 만큼 지수이동평균 적용
 const INTEGRATION_TIME: f64 = 0.3 / 2.0;
 // AES17에 따라 RMS 값에 +3dB를 적용하기 위한 보정값 (log10(2) = 0.3)
@@ -63,5 +65,7 @@ fn calculate_peak_inner(samples: Vec<isize>, channels: usize, max_amplitude: f64
 fn _audiometer(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(calculate_rms_inner, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_peak_inner, m)?)?;
+    m.add_function(wrap_pyfunction!(lufs::parse_integrated_loudness, m)?)?;
+    m.add_function(wrap_pyfunction!(lufs::parse_momentary_loudness, m)?)?;
     Ok(())
 }
