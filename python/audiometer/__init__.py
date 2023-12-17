@@ -1,3 +1,4 @@
+from ._audiometer import convert_24bit_to_32bit
 from ._wrapper import (
     calculate_integrated_loudness,
     calculate_lufs,
@@ -12,4 +13,5 @@ __all__ = [
     "calculate_integrated_loudness",
     "calculate_momentary_loudness",
     "calculate_lufs",
+    "convert_24bit_to_32bit",
 ]
