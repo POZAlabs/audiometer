@@ -1,6 +1,8 @@
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 
+// Return PyBytes: https://users.rust-lang.org/t/pyo3-best-way-to-return-bytes-from-function-call/46577/2
+// NOTE: `Vec<u8>`을 리턴하는 것보다 `PyBytes`를 리턴하는 것이 빠름
 #[pyfunction]
 pub fn convert_24bit_to_32bit(py: Python, data: &PyBytes) -> PyObject {
     let len_data = data.len().unwrap();
