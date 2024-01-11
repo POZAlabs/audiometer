@@ -34,7 +34,7 @@ pub fn parse_integrated_loudness(filter_output: &str) -> f64 {
         })
         .collect::<Vec<f64>>();
 
-    *outputs.first().unwrap()
+    *outputs.first().unwrap_or(&f64::INFINITY)
 }
 
 #[pyfunction]
