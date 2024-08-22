@@ -1,0 +1,36 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - 3.11
+          - 3.12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: FedericoCarboni/setup-ffmpeg@v2
+        id: setup-ffmpeg
+
+      - uses: actions/setup-python@v5
+        id: setup-python
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install maturin
+          maturin develop --extras=dev
+
+      - name: Run tests
+        run: |
+          pytest -vv -s tests
