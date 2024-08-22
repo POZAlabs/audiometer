@@ -12,6 +12,7 @@ fn _audiometer(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(peak::measure_peak, m)?)?;
     m.add_function(wrap_pyfunction!(lufs::parse_integrated_loudness, m)?)?;
     m.add_function(wrap_pyfunction!(lufs::parse_momentary_loudness, m)?)?;
+    m.add_function(wrap_pyfunction!(lufs::measure_loudness, m)?)?;
     m.add_function(wrap_pyfunction!(sample::convert_24bit_to_32bit, m)?)?;
     Ok(())
 }

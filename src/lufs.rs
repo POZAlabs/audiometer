@@ -1,5 +1,40 @@
+use std::path::PathBuf;
+
 use pyo3::prelude::*;
+use pyo3::types::PyDict;
 use regex::Regex;
+
+#[pyfunction]
+pub fn measure_loudness<'py>(py: Python<'py>, audio_path: PathBuf) -> &PyDict {
+    let filter_output = apply_ebu128_filter(audio_path.to_str().unwrap());
+
+    let result = PyDict::new(py);
+    result
+        .set_item("integrated", parse_integrated_loudness(&filter_output))
+        .unwrap();
+    result
+        .set_item("momentary", parse_momentary_loudness(&filter_output))
+        .unwrap();
+
+    result
+}
+
+fn apply_ebu128_filter(input_path: &str) -> String {
+    let output = std::process::Command::new("ffmpeg")
+        .args([
+            "-i",
+            input_path,
+            "-filter_complex",
+            "ebur128=peak=true",
+            "-f",
+            "null",
+            "-",
+        ])
+        .output()
+        .expect("Failed to execute command using ffmpeg");
+
+    std::str::from_utf8(&output.stderr).unwrap().to_string()
+}
 
 #[pyfunction]
 pub fn parse_integrated_loudness(filter_output: &str) -> f64 {
