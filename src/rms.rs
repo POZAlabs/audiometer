@@ -1,6 +1,11 @@
 use pyo3::pyfunction;
 
-use crate::utils::{AMPLITUDE_COEFFICIENT, INTEGRATION_TIME, ratio_to_db};
+use crate::utils::ratio_to_db;
+
+// Integration time 300ms을 2를 나눈 값인 150ms 만큼 지수이동평균 적용
+const INTEGRATION_TIME: f64 = 0.3 / 2.0;
+// AES17에 따라 RMS 값에 +3dB를 적용하기 위한 보정값 (log10(2) = 0.3)
+const AMPLITUDE_COEFFICIENT: f64 = 2.0;
 
 #[pyfunction]
 pub fn measure_rms(
