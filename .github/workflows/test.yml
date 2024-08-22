@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: FedericoCarboni/setup-ffmpeg@v2
+      - uses: FedericoCarboni/setup-ffmpeg@v3
         id: setup-ffmpeg
 
       - uses: actions/setup-python@v5
@@ -26,11 +26,17 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
+      - name: Setup venv
+        run: |
+          python -m venv .venv
+
       - name: Install dependencies
         run: |
+          source .venv/bin/activate
           pip install maturin
           maturin develop --extras=dev
 
       - name: Run tests
         run: |
+          source .venv/bin/activate
           pytest -vv -s tests
