@@ -5,6 +5,7 @@ mod peak;
 mod rms;
 mod sample;
 mod utils;
+mod types;
 
 #[pymodule]
 fn _audiometer(_py: Python, m: &PyModule) -> PyResult<()> {
