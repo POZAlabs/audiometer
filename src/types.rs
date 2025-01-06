@@ -16,6 +16,13 @@ impl Samples {
         source.extend(buffer.iter().map(|s| s.get().into()));
         Some(Self { source })
     }
+
+    pub fn normalized_source(&self, max_amplitude: f64) -> Vec<f64> {
+        self.source
+            .iter()
+            .map(|s| *s as f64 / max_amplitude)
+            .collect()
+    }
 }
 
 impl FromPyObject<'_> for Samples {
