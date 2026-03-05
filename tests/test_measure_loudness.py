@@ -5,10 +5,6 @@ import pydub
 
 
 def test_measure_loudness(audio_path: Path):
-    expected = dict(
-        integrated=-23.5,
-    )
-
     audio_segment = pydub.AudioSegment.from_wav(audio_path)
     actual = audiometer.measure_loudness(
         samples=audio_segment.get_array_of_samples(),
@@ -17,4 +13,5 @@ def test_measure_loudness(audio_path: Path):
         sample_rate=audio_segment.frame_rate,
     )
 
-    assert actual["integrated"] == expected["integrated"]
+    assert isinstance(actual, audiometer.Loudness)
+    assert actual.integrated == -23.5
