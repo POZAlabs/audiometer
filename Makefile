@@ -1,5 +1,6 @@
-setup-project:
-	./scripts/setup-project.sh
+setup:
+	uv sync
+	uv run maturin develop --uv
 
 publish:
-	poetry publish --build
+	uv run maturin publish

@@ -8,6 +8,6 @@ from ._audiometer import (
 __all__ = [
     "Loudness",
     "measure_loudness",
-    "measure_rms",
     "measure_peak",
+    "measure_rms",
 ]
