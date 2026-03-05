@@ -1,6 +1,6 @@
 # audiometer
 
-Calculate audio level meter.
+Audio level metering library.
 
 ## Meters
 
