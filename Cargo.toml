@@ -1,7 +1,7 @@
 [package]
 name = "audiometer"
 version = "0.17.0"
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
@@ -9,5 +9,5 @@ name = "audiometer"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.19.2", features = ["extension-module"] }
+pyo3 = { version = "0.27", features = ["extension-module"] }
 ebur128 = "0.1.10"

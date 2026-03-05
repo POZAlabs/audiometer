@@ -1,9 +1,10 @@
 from collections.abc import MutableSequence
-from typing import TypedDict
 
-class Loudness(TypedDict):
-    integrated: float
-    momentary: list[float]
+class Loudness:
+    @property
+    def integrated(self) -> float: ...
+    @property
+    def momentary(self) -> list[float]: ...
 
 def measure_rms(
     samples: MutableSequence[int],
