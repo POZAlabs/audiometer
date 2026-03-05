@@ -26,7 +26,7 @@ pub fn measure_loudness(
     max_amplitude: f64,
     sample_rate: u32,
 ) -> PyResult<Loudness> {
-    let (integrated, momentary_values) = py.allow_threads(|| {
+    let (integrated, momentary_values) = py.detach(|| {
         let mut meter = ebur128::EbuR128::new(
             channels,
             sample_rate,

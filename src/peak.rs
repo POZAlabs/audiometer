@@ -5,7 +5,7 @@ use crate::utils::ratio_to_db;
 
 #[pyfunction]
 pub fn measure_peak(py: Python, samples: types::Samples, channels: u32, max_amplitude: f64) -> f64 {
-    py.allow_threads(|| {
+    py.detach(|| {
         let channels = channels as usize;
         let mut max_peak: f64 = 0.0;
         for i in 0..channels {

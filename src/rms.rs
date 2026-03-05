@@ -15,7 +15,7 @@ pub fn measure_rms(
     max_amplitude: f64,
     sample_rate: u32,
 ) -> f64 {
-    py.allow_threads(|| {
+    py.detach(|| {
         let channels = channels as usize;
         let decay_const = (-1.0 / sample_rate as f64 / INTEGRATION_TIME).exp();
         let update_ratio = 1.0 - decay_const;

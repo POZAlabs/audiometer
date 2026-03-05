@@ -1,5 +1,5 @@
 use pyo3::buffer::PyBuffer;
-use pyo3::{Bound, FromPyObject, PyAny, PyResult};
+use pyo3::prelude::*;
 
 pub struct Samples {
     pub source: Vec<i32>,
@@ -8,10 +8,10 @@ pub struct Samples {
 impl Samples {
     fn from_buffer<T: pyo3::buffer::Element + Into<i32>>(
         buffer: &PyBuffer<T>,
-        ob: &Bound<'_, PyAny>,
+        py: Python<'_>,
     ) -> Option<Self> {
         let mut source = Vec::with_capacity(buffer.item_count());
-        let buffer = buffer.as_slice(ob.py())?;
+        let buffer = buffer.as_slice(py)?;
 
         source.extend(buffer.iter().map(|s| s.get().into()));
         Some(Self { source })
@@ -25,12 +25,14 @@ impl Samples {
     }
 }
 
-impl<'py> FromPyObject<'py> for Samples {
-    fn extract_bound(ob: &Bound<'py, PyAny>) -> PyResult<Self> {
+impl<'a, 'py> FromPyObject<'a, 'py> for Samples {
+    type Error = PyErr;
+
+    fn extract(ob: Borrowed<'a, 'py, PyAny>) -> PyResult<Self> {
         macro_rules! try_extract_buffer {
             ($type:ty) => {
-                if let Ok(buffer) = PyBuffer::<$type>::get(ob) {
-                    if let Some(samples) = Samples::from_buffer(&buffer, ob) {
+                if let Ok(buffer) = PyBuffer::<$type>::get(&ob) {
+                    if let Some(samples) = Samples::from_buffer(&buffer, ob.py()) {
                         return Ok(samples);
                     }
                 }
