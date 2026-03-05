@@ -8,7 +8,8 @@ mod types;
 mod utils;
 
 #[pymodule]
-fn _audiometer(_py: Python, m: &PyModule) -> PyResult<()> {
+fn _audiometer(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_class::<lufs::Loudness>()?;
     m.add_function(wrap_pyfunction!(rms::measure_rms, m)?)?;
     m.add_function(wrap_pyfunction!(peak::measure_peak, m)?)?;
     m.add_function(wrap_pyfunction!(lufs::measure_loudness, m)?)?;
