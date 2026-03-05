@@ -21,22 +21,15 @@ jobs:
         id: setup-ffmpeg
 
       - uses: actions/setup-python@v5
-        id: setup-python
         with:
           python-version: ${{ matrix.python-version }}
-          cache: pip
 
-      - name: Setup venv
-        run: |
-          python -m venv .venv
+      - uses: astral-sh/setup-uv@v6
 
       - name: Install dependencies
         run: |
-          source .venv/bin/activate
-          pip install maturin
-          maturin develop --extras=dev
+          uv sync --python ${{ matrix.python-version }}
+          uv run maturin develop --uv
 
       - name: Run tests
-        run: |
-          source .venv/bin/activate
-          pytest -vv -s tests
+        run: uv run pytest -vv -s tests
